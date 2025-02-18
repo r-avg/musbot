@@ -5,11 +5,9 @@
 
 // structs and impls
 
-// global decl
-
 struct card {
   int number;
-  int suit;
+  int suit; // could this be an enum? yeah most likely but there isn't really much of a point
   // 0 = swords
   // 1 = cups
   // 2 = coins
@@ -23,11 +21,11 @@ struct card deck[40];
 void initalize_deck ()
 {
   int n = 1;
-  int d = 0;
+  int s = 0;
 
   for (int i = 0; i < 40; i++) { // loop through every card
     deck[i].number = n;
-    deck[i].suit = d;
+    deck[i].suit = s;
 
     switch (n) {
       case 7:  
@@ -35,7 +33,7 @@ void initalize_deck ()
         break;
       case 12: 
         n = 1;  // new suit!
-        d++;
+        s++;
         break;
       default: n++;
     }
@@ -47,6 +45,7 @@ void print_cards(int cards) { // this function used for debugging shit with the 
     printf("%d: ", i+1);
     printf("%d", deck[i].number);
     printf(", ");
+
     switch (deck[i].suit) {
       case 0:
         printf("SWORDS\n");
