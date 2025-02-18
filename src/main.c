@@ -1,6 +1,7 @@
 // includes
 
 #include <stdio.h>
+#include <stdlib.h> // for rng
 
 // structs and impls
 
@@ -41,8 +42,9 @@ void initalize_deck ()
   }
 }
 
-void print_cards(int cards) {
+void print_cards(int cards) { // this function used for debugging shit with the deck
   for (int i = 0; i < cards; i++) {
+    printf("%d: ", i+1);
     printf("%d", deck[i].number);
     printf(", ");
     switch (deck[i].suit) {
@@ -59,8 +61,19 @@ void print_cards(int cards) {
         printf("CLUBS\n");
         break;
       default:
-        printf("someone's gotten creative\n");
+        printf("someone's gotten creative!\n");
     }
+  }
+}
+
+void shuffle() {
+  // int r = rand() % 20; <- generates a random int between 0 and 19!
+
+  for (int i = 0; i < 40; i++) {
+    int r = rand() % 40;
+    struct card temp = deck[r];
+    deck[r] = deck[i];
+    deck[i] = temp;
   }
 }
 
@@ -69,6 +82,8 @@ void print_cards(int cards) {
 int main(int argc, char *argv[])
 {
   initalize_deck();
+
+  shuffle();
 
   print_cards(40);
 }
