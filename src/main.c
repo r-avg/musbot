@@ -2,12 +2,14 @@
 
 #include <stdio.h>
 #include <stdlib.h> // for rng
+#include <stdbool.h> // booleans are dlc, for whatever reason
+#include <string.h>
 
 // structs and impls
 
 struct card {
   int number;
-  int suit; // could this be an enum? yeah most likely but there isn't really much of a point
+  int suit; // could this be an enum? yeah most likely but who cares 
   // 0 = swords
   // 1 = cups
   // 2 = coins
@@ -15,6 +17,14 @@ struct card {
 };
 
 struct card deck[40];
+
+struct player {
+  struct card hand[4];
+  bool is_pair; // if player isn't your pair, then they're part of the other pair!
+  char name[]; // arrays of undeclared length must be declared at the end of the struct
+};
+
+struct player players[4];
 
 // other functions
 
@@ -40,7 +50,7 @@ void initalize_deck ()
   }
 }
 
-void print_cards(int cards) { // this function used for debugging shit with the deck
+void print_deck(int cards) { // this function used for debugging shit with the deck
   for (int i = 0; i < cards; i++) {
     printf("%d: ", i+1);
     printf("%d", deck[i].number);
@@ -66,13 +76,32 @@ void print_cards(int cards) { // this function used for debugging shit with the 
 }
 
 void shuffle() {
-  // int r = rand() % 20; <- generates a random int between 0 and 19!
-
   for (int i = 0; i < 40; i++) {
     int r = rand() % 40;
     struct card temp = deck[r];
     deck[r] = deck[i];
     deck[i] = temp;
+  }
+}
+
+struct card draw_card() { // gets the top card from the deck, "deletes" that card and shuffles all cards forwards once
+  struct card drawn_card = deck[0];
+
+  for (int i = 0; i < 40; i++) {
+    deck[i] = deck[i+1]; // might cause OOB so keep an eye out! teehee
+  }
+
+  return drawn_card;
+}
+
+void init_players() {
+  for (int i = 0; i < 4; i++) { // loop through the players
+    strcpy(players[i].name, "Norberto"); // can't assign to an array because reasons
+   
+    for (int j = 0; j < 4; j++) {
+      players[i].hand[j] = draw_card();
+    }
+    // TODO: the rest of player initialization
   }
 }
 
@@ -84,6 +113,6 @@ int main(int argc, char *argv[])
 
   shuffle();
 
-  print_cards(40);
+  print_deck(40);
 }
 
