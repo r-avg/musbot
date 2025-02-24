@@ -1,5 +1,6 @@
 // includes
 
+#include <math.h>
 #include <stdio.h>
 #include <stdlib.h> // for rng
 #include <stdbool.h> // booleans are dlc, for whatever reason
@@ -26,7 +27,45 @@ struct player {
 
 struct player players[4];
 
-// other functions
+// debug functions
+
+void print_card(struct card input_card) {
+  printf("%d of ", input_card.number);
+  
+  switch (input_card.suit) {
+    case 0:
+      printf("SWORDS\n");
+      break;
+    case 1:
+      printf("CUPS\n");
+      break;
+    case 2:
+      printf("COINS\n");
+      break;
+    case 3:
+      printf("CLUBS\n");
+      break;
+    default:
+      printf("someone's gotten creative!\n");
+  }
+}
+
+void print_deck(int cards) { // this function used for debugging shit with the deck
+  for (int i = 0; i < cards; i++) {
+    print_card(deck[i]);
+  }
+}
+
+void print_players() {
+  for (int i = 0; i < 4; i++) { // loop through players
+    printf("%s\n", players[i].name);
+    for (int j = 0; j < 4; j++) { // loop through cards
+      print_card(players[i].hand[j]);
+    }
+  }
+}
+
+// regular old functions
 
 void initalize_deck ()
 {
@@ -50,31 +89,6 @@ void initalize_deck ()
   }
 }
 
-void print_deck(int cards) { // this function used for debugging shit with the deck
-  for (int i = 0; i < cards; i++) {
-    printf("%d: ", i+1);
-    printf("%d", deck[i].number);
-    printf(", ");
-
-    switch (deck[i].suit) {
-      case 0:
-        printf("SWORDS\n");
-        break;
-      case 1:
-        printf("CUPS\n");
-        break;
-      case 2:
-        printf("COINS\n");
-        break;
-      case 3:
-        printf("CLUBS\n");
-        break;
-      default:
-        printf("someone's gotten creative!\n");
-    }
-  }
-}
-
 void shuffle() {
   for (int i = 0; i < 40; i++) {
     int r = rand() % 40;
@@ -88,8 +102,10 @@ struct card draw_card() { // gets the top card from the deck, "deletes" that car
   struct card drawn_card = deck[0];
 
   for (int i = 0; i < 40; i++) {
-    deck[i] = deck[i+1]; // might cause OOB so keep an eye out! teehee
+    deck[i] = deck[i+1]; // NOTE: might cause OOB so keep an eye out! teehee
   }
+
+  // TODO: maybe a sound idea to empty the spaces formerly occupied by whichever card is drawn 
 
   return drawn_card;
 }
@@ -113,6 +129,10 @@ int main(int argc, char *argv[])
 
   shuffle();
 
-  print_deck(40);
+  init_players();
+
+  print_players();
+
+  // print_deck(40);
 }
 
