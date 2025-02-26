@@ -22,7 +22,7 @@ struct card deck[40];
 struct player {
   struct card hand[4];
   bool is_pair; // if player isn't your pair, then they're part of the other pair!
-  char name[]; // arrays of undeclared length must be declared at the end of the struct
+  char name[10]; // arrays of undeclared length must be declared at the end of the struct
 };
 
 struct player players[4];
@@ -30,7 +30,7 @@ struct player players[4];
 // debug functions
 
 void print_card(struct card input_card) {
-  printf("%d of ", input_card.number);
+  printf("  %d of ", input_card.number);
   
   switch (input_card.suit) {
     case 0:
