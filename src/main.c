@@ -158,8 +158,8 @@ void discard_card() {
     printf("Which card do you wish to discard (1..4)?\n");
     scanf("%d", &answer); // scanf wants a MEMORY ADDRESS in which to write, otherwise it segfaults
 
-    switch (answer) {
-      case 1 | 2 | 3 | 4: // why this needs to be a bitwise OR i know not
+    switch (answer) { 
+      case 1 : case 2 : case 3 : case 4: 
         discarded_card = players[0].hand[answer-1];
         players[0].hand[answer-1] = dummy();
         correct_input = true;
